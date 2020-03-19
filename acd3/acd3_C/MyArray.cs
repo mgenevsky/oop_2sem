@@ -26,7 +26,7 @@ namespace acd3_C
                 }
                 else
                 {
-                    Arr[index] = value;
+                    Console.WriteLine("Index is OK");
                 }
 
             }
@@ -39,7 +39,8 @@ namespace acd3_C
                 }
                 else
                 {
-                    return Arr[index];
+                    Console.WriteLine("Index is OK");
+                    return 0;
                 }
             }
 

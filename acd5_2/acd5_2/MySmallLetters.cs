@@ -22,6 +22,7 @@ namespace acd5_2
         public override void Sort()
         {
             Array.Sort(Str);
+            Array.Reverse(Str);
             Console.WriteLine(Str);
         }
     }

@@ -24,6 +24,12 @@ public:
     void Sort() override 
     {
         sort(Str.begin(), Str.end());
+        for (int i = 0; i < Str.length() / 2; i++)
+        {
+            char t = Str[i];
+            Str[i] = Str[Str.length() - i - 1];
+            Str[Str.length() - i - 1] = t;
+        }
         cout << Str << endl;
     }
 };

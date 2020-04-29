@@ -7,18 +7,17 @@ int main()
 {
     try
     {
-        int size = 4;
-        Expression* objArray = new Expression[size];
-        objArray[0] = Expression(4, 9, 5);
-        objArray[1] = Expression(-1, 7, -2);
-        objArray[2] = Expression(3, -2, 1);
-        objArray[3] = Expression();
-        objArray[3].A = 5;
-        objArray[3].C = 8;
-        objArray[3].D = 1;
-        for (int i = 0; i < size; i++)
+        Expression* obj = new Expression[4];
+        obj[0] = Expression(4, 9, 5);
+        obj[1] = Expression(-1, 7, -2);
+        obj[2] = Expression(3, -2, 1);
+        obj[3] = Expression();
+        obj[3].A = 5;
+        obj[3].C = 8;
+        obj[3].D = 1;
+        for (int i = 0; i < 4; i++)
         {
-            cout << objArray[i].GetTheResultExpression() << endl;
+            cout << obj[i].GetTheResultExpression() << endl;
         }
     }
     catch (logic_error ex)

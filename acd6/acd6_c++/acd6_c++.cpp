@@ -1,5 +1,8 @@
 ﻿#include <iostream>
 #include "Expression.h"
+#include <fstream>
+
+ofstream fout("Errors.txt");
 
 using namespace std;
 
@@ -17,19 +20,19 @@ int main()
         obj[3].D = 1;
         for (int i = 0; i < 4; i++)
         {
-            cout << obj[i].GetTheResultExpression() << endl;
+            fout << obj[i].GetTheResultExpression() << endl;
         }
     }
     catch (logic_error ex)
     {
-        cout << ex.what() << endl;
+        fout << ex.what() << endl;
     }
     catch (underflow_error ex)
     {
-        cout << ex.what() << endl;
+        fout << ex.what() << endl;
     }
     catch (exception)
     {
-        cout << "Unreal get result. Please, check your input variables." << endl;
+        fout << "Unreal get result. Please, check your input variables." << endl;
     }
 }

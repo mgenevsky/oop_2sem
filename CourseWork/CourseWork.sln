@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CourseWork", "CourseWork\CourseWork.csproj", "{BE18CA68-DDA3-429E-B50E-44F297F97DE3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtheneumLibrary", "AtheneumLibrary\AtheneumLibrary.csproj", "{22016C5D-26E4-4AAC-B46F-EF1DD1304901}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BE18CA68-DDA3-429E-B50E-44F297F97DE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE18CA68-DDA3-429E-B50E-44F297F97DE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE18CA68-DDA3-429E-B50E-44F297F97DE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE18CA68-DDA3-429E-B50E-44F297F97DE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22016C5D-26E4-4AAC-B46F-EF1DD1304901}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22016C5D-26E4-4AAC-B46F-EF1DD1304901}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22016C5D-26E4-4AAC-B46F-EF1DD1304901}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22016C5D-26E4-4AAC-B46F-EF1DD1304901}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ADAC52E5-9B1F-4687-97A4-9A7D17EAF370}
+	EndGlobalSection
+EndGlobal

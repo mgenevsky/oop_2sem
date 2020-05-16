@@ -16,7 +16,7 @@ namespace AtheneumLibrary
         protected internal event AccountStateHandler Closed;
 
         static int usercounter = 0;
-
+        List<Book> logbook = new List<Book>();
         public Account(string log)
         {
             Login = log;

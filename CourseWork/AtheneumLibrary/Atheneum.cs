@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace AtheneumLibrary
@@ -11,8 +12,9 @@ namespace AtheneumLibrary
     }
     public class Atheneum<T> where T : Account
     {
+        List<Book> books = new List<Book>();
+        static int bookscounter = 0;
         T[] accounts;
-
         public string Name { get; private set; }
 
         public Atheneum(string name)
@@ -37,7 +39,7 @@ namespace AtheneumLibrary
             }
 
             if (newAccount == null)
-                throw new Exception("Ошибка создания счета");
+                throw new Exception("Ошибка создания аккаунта");
             // добавляем новый счет в массив счетов      
             if (accounts == null)
                 accounts = new T[] { newAccount };
@@ -121,6 +123,94 @@ namespace AtheneumLibrary
             }
             index = -1;
             return null;
+        }
+        public void AddBook(string Name, string Author, string Genre)
+        {
+            books.Add(new Book() { IdBook = ++bookscounter, name = Name, author = Author, genre = Genre });
+        }
+        public void LookAll()
+        {
+            foreach (Book aBook in books)
+            {
+                Console.WriteLine(aBook);
+            }
+        }
+        public void Search(int flag, string key)
+        {
+            switch (flag)
+            {
+                case 1:
+                    Console.WriteLine($"\nПоиск: Книжки где содержиться \"{key}\" в названии:");
+                    List<Book> resultName = books.FindAll(FindName);
+                    if (resultName.Count != 0)
+                    {
+                        foreach (Book b in resultName)
+                            Console.WriteLine(b);
+                    }
+                    else
+                        Console.WriteLine("\nТакие книжки не найдены!");
+                    bool FindName(Book book)
+                    {
+                        if (book.name == key)
+                            return true;
+                        else
+                            return false;
+                    }
+                    break;
+                case 2:
+                    Console.WriteLine($"\nПоиск: Книжки где в авторах есть имя \"{key}\" :");
+                    List<Book> resultAuthor = books.FindAll(FindAuthor);
+                    if (resultAuthor.Count != 0)
+                    {
+                        foreach (Book b in resultAuthor)
+                            Console.WriteLine(b);
+                    }
+                    else
+                        Console.WriteLine("\nТакие книжки не найдены!");
+                    bool FindAuthor(Book book)
+                    {
+                        if (book.author == key)
+                            return true;
+                        else
+                            return false;
+                    }
+                    break;
+                case 3:
+                    Console.WriteLine($"\nПоиск: Книжки с жанром \"{key}\" :");
+                    List<Book> resultGenre = books.FindAll(FindGenre);
+                    if (resultGenre.Count != 0)
+                    {
+                        foreach (Book b in resultGenre)
+                            Console.WriteLine(b);
+                    }
+                    else
+                        Console.WriteLine("\nТакие книжки не найдены!");
+                    bool FindGenre(Book book)
+                    {
+
+                        if (book.genre == key)
+                            return true;
+                        else
+                            return false;
+                    }
+                    break;
+            }
+        }
+        public void Remove(int idbook)
+        {
+            books.Remove(new Book() { IdBook = idbook });
+        }
+        public void Sort()
+        {
+            books.Sort(delegate (Book x, Book y)
+            {
+                return x.IdBook.CompareTo(y.IdBook);
+            });
+        }
+
+        public void AddBook(int idbook)
+        {
+
         }
     }
 }

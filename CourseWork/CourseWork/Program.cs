@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using AtheneumLibrary;
@@ -12,6 +13,15 @@ namespace CourseWork
         static void Main(string[] args)
         {
             Atheneum<Account> library = new Atheneum<Account>("Библиотека КПИ");
+
+            library.AddBook("Arm","lolowtg", "xd");
+            library.AddBook("Points", "NS", "idk");
+            library.AddBook("Sit", "Stray", "xd");
+            library.AddBook("Arm", "Versyta", "lmao");
+            library.AddBook("Arm", "Aloha", "lol");
+            library.AddBook("cassette", "lolowtg", "xd");
+            library.AddBook("Sit", "Stray", "lmao");
+
             bool alive = true;
             Console.WriteLine("Вас приветствует Библиотека КПИ");
             while (alive)
@@ -20,9 +30,8 @@ namespace CourseWork
                 ConsoleColor color = Console.ForegroundColor;
                 //Console.ForegroundColor = ConsoleColor.DarkGreen; // выводим список команд зеленым цветом
                 Console.WriteLine("1. Создать аккаунт \t   2. Взять книгу \t    3. Вернуть книгу");
-                Console.WriteLine("4. Поиск книги по названию 5. Поиск книги по автору 6. Поиск книги по жанру ");
-                Console.WriteLine("7. Удалить аккаунт \t   8. Посмотреть список книг в нашей библиотеке\t ");
-                Console.WriteLine("9. Выйти из программы");
+                Console.WriteLine("4. Поиск книги \t   5. Посмотреть список книг в нашей библиотеке\t 6. Удалить аккаунт");
+                Console.WriteLine("7. Выйти из программы");
                 Console.WriteLine("Введите номер пункта:");
                 Console.ForegroundColor = color;
                 try
@@ -40,17 +49,15 @@ namespace CourseWork
                             Return(library);
                             break;
                         case 4:
+                            Search(library);
                             break;
                         case 5:
+                            LookAll(library);
                             break;
                         case 6:
-                            break;
-                        case 7:
                             CloseAccount(library);
                             break;
-                        case 8:
-                            break;
-                        case 9:
+                        case 7:
                             alive = false;
                             continue;
                     }
@@ -92,24 +99,25 @@ namespace CourseWork
         private static void Return(Atheneum<Account> library)
         {
             Console.WriteLine("Укажите id книги которую хотите вернуть:");
-
             int idbook = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Введите id аккаунта:");
+            Console.WriteLine("Введите id аккаунта с которого хотите вернуть книгу:");
             int idUser = Convert.ToInt32(Console.ReadLine());
-
             library.Return(idbook, idUser);
+            library.AddBook(idbook);
+            library.Sort();
         }
 
         private static void Take(Atheneum<Account> library)
         {
             Console.WriteLine("Укажите id книги которую хотите взять:");
-
             int idbook = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Введите id аккаунта:");
+            Console.WriteLine("Введите id аккаунта на которых хотят взять книгу:");
             int idUser = Convert.ToInt32(Console.ReadLine());
             library.Take(idbook, idUser);
+            library.Remove(idbook);
+            library.Sort();
         }
-
+        
         private static void CloseAccount(Atheneum<Account> library)
         {
             Console.WriteLine("Введите id счета, который надо закрыть:");
@@ -117,8 +125,20 @@ namespace CourseWork
 
             library.Close(id);
         }
-
-        // обработчики событий класса Account
+        private static void Search(Atheneum<Account> library)
+        {
+            Console.WriteLine("Укажите вид поиска книги:");
+            Console.WriteLine("1. Поиск книги по названию 2. Поиск книги по автору 3. Поиск книги по жанру ");
+            int flag = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Введите ключевое слово поиска: ");
+            string key = Console.ReadLine();
+            library.Search(flag, key);
+        }
+        private static void LookAll(Atheneum<Account> library)
+        {
+            Console.WriteLine("Список всех книг нашей библиотеки:");
+            library.LookAll();
+        }
         // обработчик создания аккаунта
         private static void OpenAccountHandler(object sender, AccountEventArgs e)
         {

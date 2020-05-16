@@ -6,12 +6,13 @@ namespace AtheneumLibrary
 {
     public class AdminAccount : Account
     {
-        public AdminAccount(string log) : base(log)
-        {
-        }
+        // Ctor.
+        public AdminAccount(string log) : base(log) { }
+
+        // Override account creation method.
         protected internal override void Open()
         {
-            base.OnOpened(new AccountEventArgs($"Создан новый аккаунт админа! Логин пользователя: {Login} Id пользователя: {IdUser}", Login, 0));
+            base.OnOpened(new AccountEventArgs($"A new Admin account has been created! User Login: {Login} User Id: {IdUser}", Login, 0));
         }
     }
 }

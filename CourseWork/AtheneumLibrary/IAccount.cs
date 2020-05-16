@@ -6,9 +6,12 @@ namespace AtheneumLibrary
 {
     public interface IAccount
     {
-        // Взять книгу с библиотеки
-        void Take(int idBook);
-        // Отдать книгу в библиотеку
-        void Return(int idBook);
+        // Take a book from the library.
+        void Take(int idBook, Book book);
+        // Return a book to the library.
+        Book Return(int idBook);
+
+        // Logbooks viewing method.
+        void LookAll();
     }
 }

@@ -6,17 +6,24 @@ namespace AtheneumLibrary
 {
     public abstract class Account : IAccount
     {
-        //Событие, возникающее при возврате книги
+        // The event that occurs when the book is returned.
         protected internal event AccountStateHandler Returned;
-        // Событие возникающее при взятии книги
+        // The event that occurs when the book is taken.
         protected internal event AccountStateHandler Took;
-        // Событие возникающее при открытии аккаунта
+        // Event that occurs when opening an account.
         protected internal event AccountStateHandler Opened;
-        // Событие возникающее при удалении аккаунта
+        // Event that occurs when looking book on account.
+        protected internal event AccountStateHandler Look;
+        // Event that occurs when closing an account.
         protected internal event AccountStateHandler Closed;
 
+        // Static User Id.
         static int usercounter = 0;
-        List<Book> logbook = new List<Book>();
+
+        // Create a list of logbooks individual for each User.
+        List<Book> logbooks = new List<Book>();
+
+        // Ctor.
         public Account(string log)
         {
             Login = log;
@@ -24,19 +31,29 @@ namespace AtheneumLibrary
             IdUser = ++usercounter;
         }
 
-        // Текущие кол-ство книг на счету
+        // Book counter in logbook.
         public int Sum { get; private set; }
-        //Логин
+
+        //Login.
         public string Login { get; private set; }
-        //id пользователя
+
+        //User id.
         public int IdUser { get; private set; }
-        // вызов событий
+
+        // call events.
         private void CallEvent(AccountEventArgs e, AccountStateHandler handler)
         {
             if (e != null)
+            {
+                ConsoleColor color = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 handler?.Invoke(this, e);
+                Console.ForegroundColor = color;
+            }
+
         }
-        // вызов отдельных событий. Для каждого события определяется свой витуальный метод
+
+        // Call individual events. Each event has its own virtual method.
         protected virtual void OnOpened(AccountEventArgs e)
         {
             CallEvent(e, Opened);
@@ -49,38 +66,62 @@ namespace AtheneumLibrary
         {
             CallEvent(e, Took);
         }
+        protected virtual void OnLook(AccountEventArgs e)
+        {
+            CallEvent(e, Look);
+        }
         protected virtual void OnClosed(AccountEventArgs e)
         {
             CallEvent(e, Closed);
         }
-        // метод взятия книги
-        public virtual void Take(int idbook)
+
+        // Method of taking a book.
+        public virtual void Take(int idbook, Book book)
         {
             Sum += 1;
-            OnTook(new AccountEventArgs($"Пользователь под ником {Login} взял книгу с id " + idbook,Login,idbook));
+            OnTook(new AccountEventArgs($"The user with login \"{Login}\" took the book with id \"{idbook}\"", Login, idbook));
+            logbooks.Add(book);
         }
-        // метод возврата книги
-        public virtual void Return(int idbook)
+
+        // Method of returning a book.
+        public virtual Book Return(int idbook)
         {
-            if (Sum >= 1)
+            Book temp = logbooks.Find(x => x.IdBook == idbook);
+            if (logbooks.Contains(new Book { IdBook = idbook }))
             {
                 Sum -= 1;
-                OnReturned(new AccountEventArgs($"Пользователь под ником {Login} отдал книгу с id " + idbook, Login, idbook));
+                logbooks.Remove(new Book() { IdBook = idbook });
+                OnReturned(new AccountEventArgs($"The user with login \"{Login}\" gave the book with id \"{idbook}\"", Login, idbook));
             }
             else
-            {
-                OnReturned(new AccountEventArgs($"Пользователь под ником {Login} не брал ещё книг",Login, idbook));
-            }
+                OnReturned(new AccountEventArgs($"The user with login \"{Login}\" didn`t take the book with id \"{idbook}\"", Login, idbook));
+            return temp;
+
         }
-        // открытие счета
+
+        // Method of opening an account.
         protected internal virtual void Open()
         {
-            OnOpened(new AccountEventArgs($"Создан новый аккаунт пользователя! Логин пользователя: {Login} Id пользователя: {IdUser}", Login,0));
+            OnOpened(new AccountEventArgs($"A new user account has been created! User login: {Login} User id: {IdUser}", Login, 0));
         }
-        // закрытие счета
+
+        // Logbooks viewing method.
+        public virtual void LookAll()
+        {
+            if (logbooks.Count != 0)
+            {
+                OnLook(new AccountEventArgs($"List of all books taken users with User with login \"{Login}\":", Login, 0));
+                foreach (Book aBook in logbooks)
+                    Console.WriteLine(aBook);
+            }
+            else
+                throw new Exception("This user hasn't taken any books yet, so his list is empty.");
+        }
+
+        // Method of closeing an account.
         protected internal virtual void Close()
         {
-            OnClosed(new AccountEventArgs($"Аккаунт с Логином {Login} и Id {IdUser} закрыт.  Он ушел и не отдал: {Sum} книг(у)", Login, Sum));
+            OnClosed(new AccountEventArgs($"Account with login \"{Login}\" and Id \"{IdUser}\" is closed. This User left and didn`t give: {Sum} book(s)", Login, Sum));
         }
     }
 }

@@ -12,27 +12,30 @@ namespace CourseWork
     {
         static void Main(string[] args)
         {
-            Atheneum<Account> library = new Atheneum<Account>("Библиотека КПИ");
+            // Create a list of Atheneums.
+            Atheneum<Account> library = new Atheneum<Account>("KPI Library");
 
-            library.AddBook("Arm","lolowtg", "xd");
+            // Add books to a specific library
+            library.AddBook("Arm", "lolowtg", "xd");
             library.AddBook("Points", "NS", "idk");
             library.AddBook("Sit", "Stray", "xd");
-            library.AddBook("Arm", "Versyta", "lmao");
+            library.AddBook("Arm", "Silvername", "lmao");
             library.AddBook("Arm", "Aloha", "lol");
             library.AddBook("cassette", "lolowtg", "xd");
             library.AddBook("Sit", "Stray", "lmao");
 
             bool alive = true;
-            Console.WriteLine("Вас приветствует Библиотека КПИ");
+            ConsoleColor color = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("Welcome to the KPI Library");
             while (alive)
             {
                 Console.WriteLine();
-                ConsoleColor color = Console.ForegroundColor;
-                //Console.ForegroundColor = ConsoleColor.DarkGreen; // выводим список команд зеленым цветом
-                Console.WriteLine("1. Создать аккаунт \t   2. Взять книгу \t    3. Вернуть книгу");
-                Console.WriteLine("4. Поиск книги \t   5. Посмотреть список книг в нашей библиотеке\t 6. Удалить аккаунт");
-                Console.WriteLine("7. Выйти из программы");
-                Console.WriteLine("Введите номер пункта:");
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.WriteLine("1. Create an account \t   2. Take a book \t    3. Return a book");
+                Console.WriteLine("4. Book search \t\t   5. View a list of books in our library");
+                Console.WriteLine("6. View user books \t   7. Delete account \t    8. Exit the program");
+                Console.WriteLine("Enter item number:");
                 Console.ForegroundColor = color;
                 try
                 {
@@ -55,107 +58,131 @@ namespace CourseWork
                             LookAll(library);
                             break;
                         case 6:
-                            CloseAccount(library);
+                            UserLook(library);
                             break;
                         case 7:
+                            CloseAccount(library);
+                            break;
+                        case 8:
                             alive = false;
                             continue;
+                        default:
+                            throw new Exception("This item does not exist, try again");
                     }
                 }
                 catch (Exception ex)
                 {
-                    // выводим сообщение об ошибке красным цветом
+                    // display an error message with red color
                     color = Console.ForegroundColor;
-                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine(ex.Message);
                     Console.ForegroundColor = color;
                 }
             }
         }
 
+        // Method of opening an account in specific library.
         private static void OpenAccount(Atheneum<Account> library)
         {
-            Console.WriteLine("Укажите логин для создания аккаунта:");
-
+            Console.WriteLine("Enter login:");
             string login = Console.ReadLine();
-            Console.WriteLine("Выберите тип аккаунта: 1. Админ 2. Обычный");
+
+            Console.WriteLine("Select an account type:");
+            Console.WriteLine("1. Admin 2. Normal");
             AccountType accountType;
-
             int type = Convert.ToInt32(Console.ReadLine());
-
             if (type == 2)
-                accountType = AccountType.Simple;
+                accountType = AccountType.Regular;
             else
                 accountType = AccountType.Admin;
 
             library.Open(accountType,
                 login,
-                TookBookHandler,  // обработчик взятия книги
-                ReturnBookHandler, // обработчик возвращения книги
-                CloseAccountHandler, // обработчик закрытия счета
-                OpenAccountHandler); // обработчик открытия счета
+                TookBookHandler,  // take book handler
+                ReturnBookHandler, // book return handler
+                CloseAccountHandler, // account closing handler
+                OpenAccountHandler, // account opening handler
+                LookAccountHandler); // looking for all books at account handler
         }
 
+        // Method of returning a book in specific library.
         private static void Return(Atheneum<Account> library)
         {
-            Console.WriteLine("Укажите id книги которую хотите вернуть:");
-            int idbook = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Введите id аккаунта с которого хотите вернуть книгу:");
+            Console.WriteLine("Enter the Id of the Account that wanted to return the book:");
             int idUser = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Enter the Id of the book you want to return:");
+            int idbook = Convert.ToInt32(Console.ReadLine());
             library.Return(idbook, idUser);
-            library.AddBook(idbook);
-            library.Sort();
         }
 
+        // Method for viewing books taken by a specific user in specific library.
+        private static void UserLook(Atheneum<Account> library)
+        {
+            Console.WriteLine("Enter the Id of the Account where you want to see the list of books:");
+            int idUser = Convert.ToInt32(Console.ReadLine());
+            library.UserLook(idUser);
+        }
+
+        // Method of taking a book in specific library.
         private static void Take(Atheneum<Account> library)
         {
-            Console.WriteLine("Укажите id книги которую хотите взять:");
-            int idbook = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Введите id аккаунта на которых хотят взять книгу:");
+            Console.WriteLine("Enter the Id of the Account that wanted to take the book:");
             int idUser = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Enter the Id of the book you want to take:");
+            int idbook = Convert.ToInt32(Console.ReadLine());
             library.Take(idbook, idUser);
-            library.Remove(idbook);
-            library.Sort();
         }
-        
+
+        // Method of closeing an account in specific library.
         private static void CloseAccount(Atheneum<Account> library)
         {
-            Console.WriteLine("Введите id счета, который надо закрыть:");
+            Console.WriteLine("Enter the id of the account to be closed:");
             int id = Convert.ToInt32(Console.ReadLine());
-
             library.Close(id);
         }
+
+        // Book search method by parameter in specific library.
         private static void Search(Atheneum<Account> library)
         {
-            Console.WriteLine("Укажите вид поиска книги:");
-            Console.WriteLine("1. Поиск книги по названию 2. Поиск книги по автору 3. Поиск книги по жанру ");
+            Console.WriteLine("Indicate the type of book search:");
+            Console.WriteLine("1. Search by name 2. Search by author 3. Search by genre");
             int flag = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Введите ключевое слово поиска: ");
+            Console.WriteLine("Enter your search keyword:");
             string key = Console.ReadLine();
             library.Search(flag, key);
         }
+
+        // Method for viewing all books in specific library.
         private static void LookAll(Atheneum<Account> library)
         {
-            Console.WriteLine("Список всех книг нашей библиотеки:");
+            Console.WriteLine("List of all books in our library:");
             library.LookAll();
         }
-        // обработчик создания аккаунта
+
+        // account event handlers.
+        // account creation handler.
         private static void OpenAccountHandler(object sender, AccountEventArgs e)
         {
             Console.WriteLine(e.Message);
         }
-        // обработчик взятия книги
+        // take book handler.
         private static void TookBookHandler(object sender, AccountEventArgs e)
         {
             Console.WriteLine(e.Message);
         }
-        // обработчик возврата книги
+        // book return handler.
         private static void ReturnBookHandler(object sender, AccountEventArgs e)
         {
             Console.WriteLine(e.Message);
         }
-        // обработчик удаления аккаунта
+        // account deletion handler.
         private static void CloseAccountHandler(object sender, AccountEventArgs e)
+        {
+            Console.WriteLine(e.Message);
+        }
+
+        // looking for all acoount books handler.
+        private static void LookAccountHandler(object sender, AccountEventArgs e)
         {
             Console.WriteLine(e.Message);
         }

@@ -8,12 +8,16 @@ namespace AtheneumLibrary
 
     public class AccountEventArgs
     {
-        // Сообщение
+        // Message.
         public string Message { get; private set; }
-        //логин юзера
+
+        //User login.
         public string Login { get; private set; }
-        // Кол-ство книг в формуляре, на которое изменился счетчик
+
+        // Book counter in logbook.
         public int Sum { get; private set; }
+
+        //Ctor.
         public AccountEventArgs(string _mes, string _log, int _sum) 
         {
             Login = _log;

@@ -156,7 +156,7 @@ namespace AtheneumLibrary
             return null;
         }
 
-        // Method to Add book to a list.
+        // Method to Add book to a list in library.
         public void AddBook(string Name, string Author, string Genre)
         {
             books.Add(new Book() { IdBook = ++bookscounter, name = Name, author = Author, genre = Genre });

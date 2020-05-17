@@ -155,7 +155,6 @@ namespace CourseWork
         // Method for viewing all books in specific library.
         private static void LookAll(Atheneum<Account> library)
         {
-            Console.WriteLine("List of all books in our library:");
             library.LookAll();
         }
 

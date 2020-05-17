@@ -165,8 +165,14 @@ namespace AtheneumLibrary
         // Method for viewing all books.
         public void LookAll()
         {
-            foreach (Book aBook in books)
-                Console.WriteLine(aBook);
+            if (books.Count != 0)
+            {
+                Console.WriteLine("List of all books in our library:");
+                foreach (Book aBook in books)
+                    Console.WriteLine(aBook);
+            }
+            else
+                throw new Exception("There are no books in library");
         }
 
         // Book search method by parameter.

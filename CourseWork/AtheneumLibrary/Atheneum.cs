@@ -162,7 +162,7 @@ namespace AtheneumLibrary
             books.Add(new Book() { IdBook = ++bookscounter, name = Name, author = Author, genre = Genre });
         }
 
-        // Method for viewing all books.
+        // Method for viewing all books in library.
         public void LookAll()
         {
             if (books.Count != 0)

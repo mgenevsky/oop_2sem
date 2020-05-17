@@ -23,6 +23,7 @@ namespace CourseWork
             library.AddBook("Arm", "Aloha", "lol");
             library.AddBook("cassette", "lolowtg", "xd");
             library.AddBook("Sit", "Stray", "lmao");
+            library.AddBook("Sit", "Stray", "lmao");
 
             bool alive = true;
             ConsoleColor color = Console.ForegroundColor;

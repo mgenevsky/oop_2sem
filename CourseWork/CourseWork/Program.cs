@@ -148,9 +148,15 @@ namespace CourseWork
             Console.WriteLine("Indicate the type of book search:");
             Console.WriteLine("1. Search by name 2. Search by author 3. Search by genre");
             int flag = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Enter your search keyword:");
-            string key = Console.ReadLine();
-            library.Search(flag, key);
+            if ((flag == 1) || (flag == 2) || (flag == 3))
+            {
+                Console.WriteLine("Enter your search keyword:");
+                string key = Console.ReadLine();
+                library.Search(flag, key);
+            }
+            else
+                throw new Exception("This item does not exist, try again");
+
         }
 
         // Method for viewing all books in specific library.

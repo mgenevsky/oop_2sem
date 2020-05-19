@@ -87,11 +87,14 @@ namespace CourseWork
         {
             Console.WriteLine("Enter login:");
             string login = Console.ReadLine();
-
+            if (login=="")
+                throw new Exception("Login cann`t be empty");
             Console.WriteLine("Select an account type:");
             Console.WriteLine("1. Admin 2. Normal");
             AccountType accountType;
             int type = Convert.ToInt32(Console.ReadLine());
+            if ((type != 1) && (type != 2))
+                throw new Exception("This type of account does not exist");
             if (type == 2)
                 accountType = AccountType.Regular;
             else
@@ -148,14 +151,12 @@ namespace CourseWork
             Console.WriteLine("Indicate the type of book search:");
             Console.WriteLine("1. Search by name 2. Search by author 3. Search by genre");
             int flag = Convert.ToInt32(Console.ReadLine());
-            if ((flag == 1) || (flag == 2) || (flag == 3))
-            {
-                Console.WriteLine("Enter your search keyword:");
-                string key = Console.ReadLine();
-                library.Search(flag, key);
-            }
-            else
+            if ((flag != 1) && (flag != 2) && (flag != 3))
                 throw new Exception("This item does not exist, try again");
+            Console.WriteLine("Enter your search keyword:");
+            string key = Console.ReadLine();
+            library.Search(flag, key);
+
 
         }
 

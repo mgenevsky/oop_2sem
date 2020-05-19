@@ -80,7 +80,7 @@ namespace AtheneumLibrary
                 Sort();
             }
             else
-                throw new Exception("Books with such Id aren`t in our library");
+                throw new Exception("Book with such Id isn`t in our library");
         }
 
         // Method return book from account.

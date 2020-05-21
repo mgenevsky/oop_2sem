@@ -8,6 +8,7 @@ namespace AtheneumLibrary
     {
         // Take a book from the library.
         void Take(int idBook, Book book);
+
         // Return a book to the library.
         Book Return(int idBook);
 

@@ -11,13 +11,13 @@ namespace AtheneumLibrary
         // Message.
         public string Message { get; private set; }
 
-        //User login.
+        // User login.
         public string Login { get; private set; }
 
         // Book counter in logbook.
         public int Sum { get; private set; }
 
-        //Ctor.
+        // Ctor.
         public AccountEventArgs(string _mes, string _log, int _sum) 
         {
             Login = _log;

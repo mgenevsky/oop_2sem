@@ -55,7 +55,7 @@ namespace AtheneumLibrary
                 return this.IdBook.CompareTo(compareBook.IdBook);
         }
 
-        //Metod that return IdBook.
+        // Metod that return IdBook.
         public override int GetHashCode()
         {
             return IdBook;

@@ -15,7 +15,7 @@ namespace CourseWork
             // Create a list of Atheneums.
             Atheneum<Account> library = new Atheneum<Account>("KPI Library");
 
-            // Add books to a specific library
+            // Add books to a specific library.
             library.AddBook("Arm", "lolowtg", "xd");
             library.AddBook("Points", "NS", "idk");
             library.AddBook("Sit", "Stray", "xd");
@@ -31,12 +31,12 @@ namespace CourseWork
             Console.WriteLine("Welcome to the KPI Library");
             while (alive)
             {
-                Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.WriteLine("1. Create an account \t   2. Take a book \t    3. Return a book");
-                Console.WriteLine("4. Book search \t\t   5. View a list of books in our library");
-                Console.WriteLine("6. View user books \t   7. Delete account \t    8. Exit the program");
-                Console.WriteLine("Enter item number:");
+                Console.WriteLine("\n1. Create an account \t   2. Login account\n3. Book search \t\t   4. View a list of books in our library");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("5. Exit the program");
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.WriteLine("\nEnter item number:");
                 Console.ForegroundColor = color;
                 try
                 {
@@ -47,24 +47,15 @@ namespace CourseWork
                             OpenAccount(library);
                             break;
                         case 2:
-                            Take(library);
+                            LoginAccount(library);
                             break;
                         case 3:
-                            Return(library);
-                            break;
-                        case 4:
                             Search(library);
                             break;
+                        case 4:
+                            LookAllBooks(library);
+                            break;
                         case 5:
-                            LookAll(library);
-                            break;
-                        case 6:
-                            UserLook(library);
-                            break;
-                        case 7:
-                            CloseAccount(library);
-                            break;
-                        case 8:
                             alive = false;
                             continue;
                         default:
@@ -73,7 +64,7 @@ namespace CourseWork
                 }
                 catch (Exception ex)
                 {
-                    // display an error message with red color
+                    // Display an error message with red color.
                     color = Console.ForegroundColor;
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine(ex.Message);
@@ -90,15 +81,20 @@ namespace CourseWork
             if (login=="")
                 throw new Exception("Login cann`t be empty");
             Console.WriteLine("Select an account type:");
-            Console.WriteLine("1. Admin 2. Normal");
+            Console.WriteLine("1. Admin 2. Regular");
             AccountType accountType;
             int type = Convert.ToInt32(Console.ReadLine());
-            if ((type != 1) && (type != 2))
-                throw new Exception("This type of account does not exist");
-            if (type == 2)
-                accountType = AccountType.Regular;
-            else
-                accountType = AccountType.Admin;
+            switch (type)
+            {
+                case 1:
+                    accountType = AccountType.Admin;
+                    break;
+                case 2:
+                    accountType = AccountType.Regular;
+                    break;
+                default:
+                    throw new Exception("This type of account does not exist");
+            }
 
             library.Open(accountType,
                 login,
@@ -106,69 +102,44 @@ namespace CourseWork
                 ReturnBookHandler, // book return handler
                 CloseAccountHandler, // account closing handler
                 OpenAccountHandler, // account opening handler
+                LoginAccountHandler, // account login handler.
+                LogoutAccountHandler, // account logout handler.
                 LookAccountHandler); // looking for all books at account handler
-        }
-
-        // Method of returning a book in specific library.
-        private static void Return(Atheneum<Account> library)
-        {
-            Console.WriteLine("Enter the Id of the Account that wanted to return the book:");
-            int idUser = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Enter the Id of the book you want to return:");
-            int idbook = Convert.ToInt32(Console.ReadLine());
-            library.Return(idbook, idUser);
-        }
-
-        // Method for viewing books taken by a specific user in specific library.
-        private static void UserLook(Atheneum<Account> library)
-        {
-            Console.WriteLine("Enter the Id of the Account where you want to see the list of books:");
-            int idUser = Convert.ToInt32(Console.ReadLine());
-            library.UserLook(idUser);
-        }
-
-        // Method of taking a book in specific library.
-        private static void Take(Atheneum<Account> library)
-        {
-            Console.WriteLine("Enter the Id of the Account that wanted to take the book:");
-            int idUser = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Enter the Id of the book you want to take:");
-            int idbook = Convert.ToInt32(Console.ReadLine());
-            library.Take(idbook, idUser);
-        }
-
-        // Method of closeing an account in specific library.
-        private static void CloseAccount(Atheneum<Account> library)
-        {
-            Console.WriteLine("Enter the id of the account to be closed:");
-            int id = Convert.ToInt32(Console.ReadLine());
-            library.Close(id);
         }
 
         // Book search method by parameter in specific library.
         private static void Search(Atheneum<Account> library)
         {
-            Console.WriteLine("Indicate the type of book search:");
-            Console.WriteLine("1. Search by name 2. Search by author 3. Search by genre");
-            int flag = Convert.ToInt32(Console.ReadLine());
-            if ((flag != 1) && (flag != 2) && (flag != 3))
-                throw new Exception("This item does not exist, try again");
-            Console.WriteLine("Enter your search keyword:");
-            string key = Console.ReadLine();
-            library.Search(flag, key);
+            library.Search();
+        }
 
-
+        // Account login method.
+        private static void LoginAccount(Atheneum<Account> library)
+        {
+            Console.WriteLine("Enter the account ID you want to login to:");
+            int idUser = Convert.ToInt32(Console.ReadLine());
+            library.LoginAccount(idUser);
         }
 
         // Method for viewing all books in specific library.
-        private static void LookAll(Atheneum<Account> library)
+        private static void LookAllBooks(Atheneum<Account> library)
         {
-            library.LookAll();
+            library.LookAllBooks();
         }
 
         // account event handlers.
         // account creation handler.
         private static void OpenAccountHandler(object sender, AccountEventArgs e)
+        {
+            Console.WriteLine(e.Message);
+        }
+        // account login handler.
+        private static void LoginAccountHandler(object sender, AccountEventArgs e)
+        {
+            Console.WriteLine(e.Message);
+        }
+        // account logout handler.
+        private static void LogoutAccountHandler(object sender, AccountEventArgs e)
         {
             Console.WriteLine(e.Message);
         }
@@ -187,8 +158,7 @@ namespace CourseWork
         {
             Console.WriteLine(e.Message);
         }
-
-        // looking for all acoount books handler.
+        // looking for all account books handler.
         private static void LookAccountHandler(object sender, AccountEventArgs e)
         {
             Console.WriteLine(e.Message);
